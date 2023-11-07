@@ -8,7 +8,15 @@
  * This function should return PWM_MAX if pwm > PWM_MAX, -PWM_MAX if pwm < -PWM_MAX, and pwm otherwise.
  */
 float limitPWM(float pwm) {
-	
+	if (pwm > PWM_MAX) {
+		return PWM_MAX;
+	}
+	else if (pwm < -PWM_MAX) {
+		return -PWM_MAX;
+	}
+	else {
+		return pwm;
+	}
 }
 
 /*
@@ -24,8 +32,17 @@ float limitPWM(float pwm) {
  * Implement this function to make the left wheel spin forwards when pwm is >= 0, and spin backwards when pwm < 0.
  */
 void setMotorLPWM(float pwm) {
-	
+	if (pwm >= 0) {
+		TIM4->CCR4 = (uint32_t) (0);
+		TIM4->CCR3= (uint32_t) (limitPWM(pwm) * MAX_TIMER_COUNTS);
+
+	}
+	else {
+		TIM4->CCR3= (uint32_t) (0);
+		TIM4->CCR4 = (uint32_t) (limitPWM(pwm) * MAX_TIMER_COUNTS);
+	}
 }
+
 
 /*
  * This function controls the right motor speed and direction. We do this by setting the timer pulse value for the appropriate channel.
@@ -40,12 +57,21 @@ void setMotorLPWM(float pwm) {
  * Implement this function to make the right wheel spin forwards when pwm is >= 0, and spin backwards when pwm < 0.
  */
 void setMotorRPWM(float pwm) {
-	
+
+	if (pwm >= 0) {
+		TIM4->CCR2 = (uint32_t) (0);
+		TIM4->CCR1= (uint32_t) (limitPWM(pwm) * MAX_TIMER_COUNTS);
+	}
+	else {
+		TIM4->CCR1 = (uint32_t) (0);
+		TIM4->CCR2 = (uint32_t) (limitPWM(pwm) * MAX_TIMER_COUNTS);
+	}
 }
 
 /*
  * Using the two previous setMotorPWM functions, implement resetMotors to set the PWM for both wheels to zero, effectively stopping them.
  */
 void resetMotors() {
-	
+	setMotorRPWM(0);
+	setMotorLPWM(0);
 }
