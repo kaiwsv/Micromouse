@@ -4,6 +4,18 @@
 
 #include "main.h"
 #include "motors.h"
+#include "encoders.h"
+
+int angleError = 0;
+int oldAngleError = 0;
+float distanceError = (0.4);
+float oldDistanceError = 0.4;
+//PID constants
+float kPw = 0;
+float kDw = 0;
+float kPx = 1;
+float kDx = 0;
+
 
 void resetPID() {
 	/*
@@ -21,7 +33,7 @@ void updatePID() {
 	/*
 	 * This function will do the heavy lifting PID logic. It should do the following: read the encoder counts to determine an error,
 	 * use that error along with some PD constants you determine in order to determine how to set the motor speeds, and then actually
-	 * set the motor speeds.
+	 * set the motor speeds.distanceError
 	 *
 	 * For assignment 3.1: implement this function to get your rat to drive forwards indefinitely in a straight line. Refer to pseudocode
 	 * example document on the google drive for some pointers
@@ -29,12 +41,33 @@ void updatePID() {
 	 * TIPS (assignment 3.1): Create kPw and kDw variables, and use a variable to store the previous error for use in computing your
 	 * derivative term. You may get better performance by having your kDw term average the previous handful of error values instead of the
 	 * immediately previous one, or using a stored error from 10-15 cycles ago (stored in an array?). This is because systick calls so frequently
-	 * that the error change may be very small and hard to operate on.
+	 * that the error chint16_tange may be very small and hard to operate on.
 	 *
 	 * For assignment 3.2: implement this function so it calculates distanceError as the difference between your goal distance and the average of
 	 * your left and right encoder counts. Calculate angleError as the difference between your goal angle and the difference between your left and
 	 * right encoder counts. Refer to pseudocode example document on the google drive for some pointers.
 	 */
+
+
+	//get encoder values
+	int16_t left_counts = getLeftEncoderCounts();
+	int16_t right_counts = getRightEncoderCounts();
+
+	//angle pid
+	angleError = right_counts - left_counts;
+	int angleCorrection = kPw * angleError + kDw * (angleError - oldAngleError);
+	oldAngleError = angleError;
+
+	//distance pid
+	distanceError = 0.4;
+	int distanceCorrection = kPx * distanceError + kDx * (distanceError - oldDistanceError);
+	oldDistanceError = distanceError;
+
+
+	setMotorLPWM(distanceCorrection + angleCorrection);
+	setMotorRPWM(distanceCorrection - angleCorrection);
+
+
 
 }
 

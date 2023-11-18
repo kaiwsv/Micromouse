@@ -8,14 +8,6 @@
 
 void SysTickFunction(void) {
 	/*
-	 * Anything in this function body will be executed every millisecond.
-	 * Call you PID update function here.
-	 */
-	
-
-
-
-	/*
 	 * This code prevents PID errors when the encoder counts get too high. For example, without it then
 	 * if the wheels are spinning forwards and PID is trying to keep their encoder counts equal, and one of the wheels
 	 * turns past 32767 and its encoder counts loop back to -32768, suddenly the difference between the encoder counts
@@ -33,4 +25,13 @@ void SysTickFunction(void) {
 		resetEncoders();
 		TIM2->CNT = (int16_t) difference; //set right encoder counts to difference
 	}
+
+
+	/*
+	 * Anything in this function body will be executed every millisecond.
+	 * Call you PID update function here.
+	 */
+
+	updatePID();
+
 }
