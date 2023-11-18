@@ -11,10 +11,13 @@ int oldAngleError = 0;
 float distanceError = (0.4);
 float oldDistanceError = 0.4;
 //PID constants
-float kPw = 0;
-float kDw = 0;
+float kPw = 0.4;
+float kDw = 0.1;
 float kPx = 1;
 float kDx = 0;
+
+float angleR = -2;
+float angleL = -2;
 
 
 void resetPID() {
@@ -54,15 +57,17 @@ void updatePID() {
 	int16_t right_counts = getRightEncoderCounts();
 
 	//angle pid
-	angleError = right_counts - left_counts;
-	int angleCorrection = kPw * angleError + kDw * (angleError - oldAngleError);
+	angleError = left_counts - right_counts;
+	float angleCorrection = kPw * angleError + kDw * (angleError - oldAngleError);
 	oldAngleError = angleError;
 
 	//distance pid
 	distanceError = 0.4;
-	int distanceCorrection = kPx * distanceError + kDx * (distanceError - oldDistanceError);
+	float distanceCorrection = kPx * distanceError + kDx * (distanceError - oldDistanceError);
 	oldDistanceError = distanceError;
 
+	angleL = distanceCorrection + angleCorrection;
+	angleR = distanceCorrection - angleCorrection;
 
 	setMotorLPWM(distanceCorrection + angleCorrection);
 	setMotorRPWM(distanceCorrection - angleCorrection);
