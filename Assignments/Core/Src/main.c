@@ -107,8 +107,8 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
-	setMotorRPWM(0.5);
-	setMotorLPWM(0.5);
+	setMotorRPWM(0.8);
+	setMotorLPWM(0);
 
   /* USER CODE END 2 */
 
@@ -118,7 +118,6 @@ int main(void)
   {
 	  left_counts = getLeftEncoderCounts();
 	  right_counts = getRightEncoderCounts();
-	  left_counts++;
 
     /* USER CODE END WHILE */
 
