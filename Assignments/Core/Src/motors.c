@@ -37,6 +37,7 @@ void setMotorLPWM(float pwm) {
 		TIM4->CCR3= (uint32_t) (limitPWM(pwm) * MAX_TIMER_COUNTS);
 
 	}
+
 	else {
 		TIM4->CCR3= (uint32_t) (0);
 		TIM4->CCR4 = (uint32_t) (-limitPWM(pwm) * MAX_TIMER_COUNTS); // flip sign if negative
