@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Metadata
+.metadata/
+
+# generated files
+Assignments/Debug/
