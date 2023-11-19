@@ -19,6 +19,12 @@ void move(int8_t n) {
 	 *
 	 * You should also call resetPID before exiting this function so your rat is ready for the next instruction.
 	 */
+	//TODO set distance number - completely wrong rn
+	setPIDGoalD(n*5000); // estimating that one square is 5000 encoder counts long - not at the lab
+
+	while (!PIDdone()) {
+	}
+	resetPID();
 }
 
 /*
@@ -35,4 +41,10 @@ void turn(int8_t n) {
 	 *
 	 * You should also call resetPID before exiting this function so your rat is ready for the next instruction.
 	 */
+	//445 difference in encoder count ~= 90 degree turn
+	setPIDGoalA(n*500); //TODO tune degrees slightly
+	while(!PIDdone()) { // wait until done
+	}
+
+	resetPID();
 }

@@ -10,14 +10,22 @@ int angleError = 0;
 int oldAngleError = 0;
 float distanceError = (0.4);
 float oldDistanceError = 0.4;
+int goalDistance = 0;
+int goalAngle = 0;
+
 //PID constants
 float kPw = 0.4;
 float kDw = 0.1;
-float kPx = 1;
+float kPx = 1; //TODO: tune kPx and kDx briefly
 float kDx = 0;
 
-float angleR = -2;
-float angleL = -2;
+//helper variable to check if goal is reached
+int goalIsReached = 0;
+int goalReachedDuration = 0;
+
+int motorR = 0;
+int motorL = 0;
+float dCorrection = 0;
 
 
 void resetPID() {
@@ -30,7 +38,37 @@ void resetPID() {
 	 *
 	 * You should additionally set your distance and error goal values (and your oldDistanceError and oldAngleError) to zero.
 	 */
+	angleError = 0;
+	oldAngleError = 0;
+	distanceError = 0;
+	oldDistanceError = 0;
+
+	goalAngle = 0;
+	goalDistance = 0;
+	goalReachedDuration = 0;
+	goalIsReached = 0;
+
+	resetEncoders();
+	resetMotors();
 }
+
+//TODO: tune limiters to optimize performance
+float angleLimiter(float angleCorrection) {
+	if (angleCorrection > 0.4) {return 0.4;}
+	else if (angleCorrection < 0.01 && angleCorrection >= 0) {return 0;}
+	else if (angleCorrection < -0.01) {return -0.4;}
+	else if (angleCorrection > -0.01 && angleCorrection <= 0) {return 0;}
+	return angleCorrection;
+}
+
+float distanceLimiter(float distanceCorrection) {
+	if (distanceCorrection > 0.4) {return 0.4;}
+	else if (distanceCorrection < 0.01 && distanceCorrection >= 0) {return 0;}
+	else if (distanceCorrection < -0.01) {return -0.4;}
+	else if (distanceCorrection > -0.01 && distanceCorrection <= 0) {return 0;}
+	return distanceCorrection;
+}
+
 
 void updatePID() {
 	/*
@@ -56,24 +94,21 @@ void updatePID() {
 	int16_t left_counts = getLeftEncoderCounts();
 	int16_t right_counts = getRightEncoderCounts();
 
-	//angle pid
-	angleError = left_counts - right_counts;
+	//angle logic
+	angleError = goalAngle - (left_counts - right_counts);
+	distanceError = goalDistance + (left_coundistancets + right_counts) / 2;
+	if (angleError < 100 && distanceError < 100) {goalIsReached = 1;} // if error is under arbitrary thresholds
 	float angleCorrection = kPw * angleError + kDw * (angleError - oldAngleError);
-	oldAngleError = angleError;
-
-	//distance pid
-	distanceError = 0.4;
 	float distanceCorrection = kPx * distanceError + kDx * (distanceError - oldDistanceError);
 	oldDistanceError = distanceError;
-
-	angleL = distanceCorrection + angleCorrection;
-	angleR = distanceCorrection - angleCorrection;
-
-	setMotorLPWM(distanceCorrection + angleCorrection);
-	setMotorRPWM(distanceCorrection - angleCorrection);
+	oldAngleError = angleError;
 
 
-
+	setMotorLPWM(distanceLimiter(distanceCorrection) - angleLimiter(angleCorrection));
+	setMotorRPWM(distanceLimiter(distanceCorrection) + angleLimiter(angleCorrection));
+	dCorrection = distanceCorrection;
+	motorL = distanceLimiter(distanceCorrection) - angleLimiter(angleCorrection);
+	motorR = distanceLimiter(distanceCorrection) + angleLimiter(angleCorrection);
 }
 
 void setPIDGoalD(int16_t distance) {
@@ -81,6 +116,7 @@ void setPIDGoalD(int16_t distance) {
 	 * For assignment 3.1: this function does not need to do anything.
 	 * For assignment 3.2: this function should set a variable that stores the goal distance.
 	 */
+	goalDistance = distance;
 }
 
 void setPIDGoalA(int16_t angle) {
@@ -88,6 +124,7 @@ void setPIDGoalA(int16_t angle) {
 	 * For assignment 3.1: this function does not need to do anything
 	 * For assignment 3.2: This function should set a variable that stores the goal angle.
 	 */
+	goalAngle = angle;
 }
 
 int8_t PIDdone(void) { // There is no bool type in C. True/False values are represented as 1 or 0.
@@ -97,6 +134,13 @@ int8_t PIDdone(void) { // There is no bool type in C. True/False values are repr
 	 * the error is zero (realistically, have it set the variable when the error is close to zero, not just exactly zero). You will have better results if you make
 	 * PIDdone() return true only if the error has been sufficiently close to zero for a certain number, say, 50, of SysTick calls in a row.
 	 */
+	if (goalIsReached == 1) {
+		goalReachedDuration++;
+	}
+	else {
+		goalReachedDuration = 0;
+	}
 
-	return 1;
+
+	return (goalReachedDuration >= 50); // return true if goal is reached and has stayed there for more than 50 calls (50ms)
 }
