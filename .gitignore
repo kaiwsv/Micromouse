@@ -35,4 +35,5 @@
 .metadata/
 
 # generated files
-Assignments/Debug/
+Assignments/Debug/*
+Assignments/Drivers/*
