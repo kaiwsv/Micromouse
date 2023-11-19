@@ -24,6 +24,7 @@
 #include "encoders.h"
 #include "motors.h"
 #include "controller.h"
+#include "delay.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,7 +91,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  Delay_Init();
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -133,6 +134,7 @@ int main(void)
 	  left_counts = getLeftEncoderCounts();
 	  right_counts = getRightEncoderCounts();
 
+	  //TODO: add rat maze logic
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -527,6 +529,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN) {
 	}
 	*/
 }
+
+ADC_HandleTypeDef* Get_HADC1_Ptr(void)
+{
+	return &hadc1;
+}
+
 /* USER CODE END 4 */
 
 /**
