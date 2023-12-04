@@ -45,8 +45,9 @@ uint16_t readIR(IR ir)
 
 	HAL_GPIO_WritePin(GPIO_Port, Emitter_Pin, GPIO_PIN_SET);
 	delayMicroseconds(50);
-	analogRead(ir);
+	uint16_t reading = analogRead(ir);
 	HAL_GPIO_WritePin(GPIO_Port, Emitter_Pin, GPIO_PIN_RESET);
+	return reading;
 }
 
 /*
