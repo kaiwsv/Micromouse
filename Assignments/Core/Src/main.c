@@ -25,6 +25,7 @@
 #include "motors.h"
 #include "controller.h"
 #include "delay.h"
+#include "irs.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,7 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define WALL_IR_THRESHOLD 2000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -55,7 +56,10 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 int16_t left_counts = 0;
 int16_t right_counts = 0;
-
+uint16_t ir_reading_left = 0;
+uint16_t ir_reading_front_left = 0;
+uint16_t ir_reading_front_right = 0;
+uint16_t ir_reading_right = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,7 +72,7 @@ static void MX_TIM2_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
-
+ADC_HandleTypeDef* Get_HADC1_Ptr(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -116,25 +120,42 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
-	turn(-2);
-	move(1);
-	turn(4);
-	move(4);
-	turn(2);
+//	move(2);
+//	move(2);
+	move(-1);
 
 	//resetMotors(); //here so rat doesn't run off the table
 	//setMotorLPWM(0.8);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  ir_reading_left = readLeftIR();
+	  ir_reading_front_left = readFrontLeftIR();
+	  ir_reading_front_right = readFrontRightIR();
+	  ir_reading_right = readRightIR();
 	  left_counts = getLeftEncoderCounts();
 	  right_counts = getRightEncoderCounts();
 
-	  //TODO: add rat maze logic
+	  //rat maze logic
+
+	  if (ir_reading_front_left < WALL_IR_THRESHOLD && ir_reading_front_right < WALL_IR_THRESHOLD) { //nothing above
+		  	//  move(0.25);
+	  }
+	  else if ((ir_reading_front_left >= WALL_IR_THRESHOLD || ir_reading_front_right >= WALL_IR_THRESHOLD)) {
+		  if (ir_reading_right < WALL_IR_THRESHOLD) {
+			//  turn(-1);
+		  }
+		  else if (ir_reading_left < WALL_IR_THRESHOLD) {
+			//  turn(1);
+		  }
+		  else {
+			//  move(-0.25);
+		  }
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -487,12 +508,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PB1 */
-  GPIO_InitStruct.Pin = GPIO_PIN_1;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : FrontRightEmitter_Pin RightEmitter_Pin */
   GPIO_InitStruct.Pin = FrontRightEmitter_Pin|RightEmitter_Pin;
