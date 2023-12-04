@@ -17,7 +17,7 @@ int goalAngle = 0;
 float kPw = 0.4;
 float kDw = 0.1;
 float kPx = 1; //TODO: tune kPx and kDx briefly
-float kDx = 0;
+float kDx = 0.05;
 
 //helper variable to check if goal is reached
 int goalIsReached = 0;
@@ -26,6 +26,9 @@ int goalReachedDuration = 0;
 int motorR = 0;
 int motorL = 0;
 float dCorrection = 0;
+
+int16_t left = -1;
+int16_t right = -1;
 
 
 void resetPID() {
@@ -56,7 +59,7 @@ void resetPID() {
 float angleLimiter(float angleCorrection) {
 	if (angleCorrection > 0.4) {return 0.4;}
 	else if (angleCorrection < 0.01 && angleCorrection >= 0) {return 0;}
-	else if (angleCorrection < -0.01) {return -0.4;}
+	else if (angleCorrection < -0.4) {return -0.4;}
 	else if (angleCorrection > -0.01 && angleCorrection <= 0) {return 0;}
 	return angleCorrection;
 }
@@ -64,7 +67,7 @@ float angleLimiter(float angleCorrection) {
 float distanceLimiter(float distanceCorrection) {
 	if (distanceCorrection > 0.4) {return 0.4;}
 	else if (distanceCorrection < 0.01 && distanceCorrection >= 0) {return 0;}
-	else if (distanceCorrection < -0.01) {return -0.4;}
+	else if (distanceCorrection < -0.4) {return -0.4;}
 	else if (distanceCorrection > -0.01 && distanceCorrection <= 0) {return 0;}
 	return distanceCorrection;
 }
@@ -94,9 +97,12 @@ void updatePID() {
 	int16_t left_counts = getLeftEncoderCounts();
 	int16_t right_counts = getRightEncoderCounts();
 
+	left = getLeftEncoderCounts();
+	right = getRightEncoderCounts();
+
 	//angle logic
 	angleError = goalAngle - (left_counts - right_counts);
-	distanceError = goalDistance + (left_coundistancets + right_counts) / 2;
+	distanceError = goalDistance + (left_counts + right_counts) / 2;
 	if (angleError < 100 && distanceError < 100) {goalIsReached = 1;} // if error is under arbitrary thresholds
 	float angleCorrection = kPw * angleError + kDw * (angleError - oldAngleError);
 	float distanceCorrection = kPx * distanceError + kDx * (distanceError - oldDistanceError);
