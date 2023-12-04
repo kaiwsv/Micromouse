@@ -56,23 +56,23 @@ uint16_t readIR(IR ir)
  */
 uint16_t readLeftIR(void)
 {
-	readIR(IR_LEFT);
+	return readIR(IR_LEFT);
 }
 
 uint16_t readFrontLeftIR(void)
 {
-	readIR(IR_FRONT_LEFT);
+	return readIR(IR_FRONT_LEFT);
 }
 
 uint16_t readFrontRightIR(void)
 {
-	readIR(IR_FRONT_RIGHT);
+	return readIR(IR_FRONT_RIGHT);
 }
 
 
 uint16_t readRightIR(void)
 {
-	readIR(IR_RIGHT);
+	return readIR(IR_RIGHT);
 }
 
 /*

@@ -35,7 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define WALL_IR_THRESHOLD 2000
+#define WALL_IR_THRESHOLD 1000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -122,7 +122,10 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 //	move(2);
 //	move(2);
-	move(-1);
+	turn (3);
+	turn(-1);
+
+	// move(-1);
 
 	//resetMotors(); //here so rat doesn't run off the table
 	//setMotorLPWM(0.8);
@@ -142,17 +145,17 @@ int main(void)
 	  //rat maze logic
 
 	  if (ir_reading_front_left < WALL_IR_THRESHOLD && ir_reading_front_right < WALL_IR_THRESHOLD) { //nothing above
-		  	//  move(0.25);
+		  	  move(0.25);
 	  }
 	  else if ((ir_reading_front_left >= WALL_IR_THRESHOLD || ir_reading_front_right >= WALL_IR_THRESHOLD)) {
 		  if (ir_reading_right < WALL_IR_THRESHOLD) {
-			//  turn(-1);
+			  turn(3);
 		  }
 		  else if (ir_reading_left < WALL_IR_THRESHOLD) {
-			//  turn(1);
+			  turn(1);
 		  }
 		  else {
-			//  move(-0.25);
+			  move(-0.25);
 		  }
 	  }
 
