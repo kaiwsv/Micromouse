@@ -22,6 +22,7 @@ float kDx = 0.05;
 //helper variable to check if goal is reached
 int goalIsReached = 0;
 int goalReachedDuration = 0;
+int timePassed = 0;
 
 int motorR = 0;
 int motorL = 0;
@@ -53,6 +54,7 @@ void resetPID() {
 
 	resetMotors();
 	resetEncoders();
+	timePassed = 0;
 }
 
 float angleLimiter(float angleCorrection) {
@@ -91,6 +93,8 @@ void updatePID() {
 	 * right encoder counts. Refer to pseudocode example document on the google drive for some pointers.
 	 */
 
+	//increment timer
+	timePassed = timePassed + 1;
 
 	//get encoder values
 	int16_t left_counts = getLeftEncoderCounts();
@@ -147,5 +151,5 @@ int8_t PIDdone(void) { // There is no bool type in C. True/False values are repr
 	}
 
 
-	return (goalReachedDuration >= 50); // return true if goal is reached and has stayed there for more than 50 calls (50ms)
+	return (goalReachedDuration >= 50 || timePassed > 3000); // return true if goal is reached and has stayed there for more than 50 calls (50ms)
 }

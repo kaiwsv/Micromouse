@@ -42,7 +42,6 @@ void turn(float n) {
 	 */
 	//about 640 at full charge
 	setPIDGoalA((int)(n*660));
-
 	while(!PIDdone()) { // wait until done
 	}
 
