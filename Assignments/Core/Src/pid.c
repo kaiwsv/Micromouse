@@ -51,11 +51,10 @@ void resetPID() {
 	goalReachedDuration = 0;
 	goalIsReached = 0;
 
-	resetEncoders();
 	resetMotors();
+	resetEncoders();
 }
 
-//TODO: tune limiters to optimize performance
 float angleLimiter(float angleCorrection) {
 	if (angleCorrection > 0.4) {return 0.4;}
 	else if (angleCorrection < 0.01 && angleCorrection >= 0) {return 0;}
@@ -103,7 +102,7 @@ void updatePID() {
 	//angle logic
 	angleError = goalAngle - (left_counts - right_counts);
 	distanceError = goalDistance + (left_counts + right_counts) / 2;
-	if (angleError < 100 && distanceError < 100) {goalIsReached = 1;} // if error is under arbitrary thresholds
+	if (angleError < 50 && angleError > -50 && distanceError < 50 && distanceError > -50) {goalIsReached = 1;} // if error is under arbitrary thresholds
 	float angleCorrection = kPw * angleError + kDw * (angleError - oldAngleError);
 	float distanceCorrection = kPx * distanceError + kDx * (distanceError - oldDistanceError);
 	oldDistanceError = distanceError;
@@ -117,7 +116,7 @@ void updatePID() {
 	motorR = distanceLimiter(distanceCorrection) + angleLimiter(angleCorrection);
 }
 
-void setPIDGoalD(int16_t distance) {
+void setPIDGoalD(int distance) {
 	/*
 	 * For assignment 3.1: this function does not need to do anything.
 	 * For assignment 3.2: this function should set a variable that stores the goal distance.
@@ -125,7 +124,7 @@ void setPIDGoalD(int16_t distance) {
 	goalDistance = distance;
 }
 
-void setPIDGoalA(int16_t angle) {
+void setPIDGoalA(int angle) {
 	/*
 	 * For assignment 3.1: this function does not need to do anything
 	 * For assignment 3.2: This function should set a variable that stores the goal angle.

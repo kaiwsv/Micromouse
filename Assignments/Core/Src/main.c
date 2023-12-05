@@ -35,7 +35,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define WALL_IR_THRESHOLD 1000
+#define WALL_IR_THRESHOLD_FR 430
+#define WALL_IR_THRESHOLD_FL 430
+#define WALL_IR_THRESHOLD_LEFT 1000
+#define WALL_IR_THRESHOLD_RIGHT 1000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -121,9 +124,28 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
 //	move(2);
-//	move(2);
-	turn (3);
+//	move(2)
+
+	/*
+	//distance constant tuning
+	move(0.25);
+	move(3);
 	turn(-1);
+	move(1);
+	turn(1);
+	move(1);
+	turn(1);
+	move(1);
+	turn(2);
+	move(1);
+	move(-0.5);
+	turn(4);
+	*/
+
+	//start from wall
+	move(0.25);
+
+
 
 	// move(-1);
 
@@ -142,22 +164,27 @@ int main(void)
 	  left_counts = getLeftEncoderCounts();
 	  right_counts = getRightEncoderCounts();
 
-	  //rat maze logic
 
-	  if (ir_reading_front_left < WALL_IR_THRESHOLD && ir_reading_front_right < WALL_IR_THRESHOLD) { //nothing above
-		  	  move(0.25);
+	  //rat maze logic
+	  if (ir_reading_front_left < WALL_IR_THRESHOLD_FL || ir_reading_front_right < WALL_IR_THRESHOLD_FR) { //nothing ahead
+		  	  move(1);
 	  }
-	  else if ((ir_reading_front_left >= WALL_IR_THRESHOLD || ir_reading_front_right >= WALL_IR_THRESHOLD)) {
-		  if (ir_reading_right < WALL_IR_THRESHOLD) {
-			  turn(3);
+	  else if ((ir_reading_front_left >= WALL_IR_THRESHOLD_LEFT || ir_reading_front_right >= WALL_IR_THRESHOLD_RIGHT)) {
+		  if (ir_reading_right < WALL_IR_THRESHOLD_RIGHT) { //if right side is clear
+			  turn(-1);
 		  }
-		  else if (ir_reading_left < WALL_IR_THRESHOLD) {
+		  else if (ir_reading_left < WALL_IR_THRESHOLD_LEFT) { //if left side is clear
 			  turn(1);
 		  }
 		  else {
-			  move(-0.25);
+			move(-1);
 		  }
 	  }
+
+	  else {
+		  move(-2);
+	  }
+
 
     /* USER CODE END WHILE */
 

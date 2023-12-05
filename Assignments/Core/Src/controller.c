@@ -19,8 +19,8 @@ void move(float n) {
 	 *
 	 * You should also call resetPID before exiting this function so your rat is ready for the next instruction.
 	 */
-	setPIDGoalD(n*650);
 
+	setPIDGoalD((int)(n*642));
 	while (!PIDdone()) {
 	}
 	resetPID();
@@ -40,8 +40,9 @@ void turn(float n) {
 	 *
 	 * You should also call resetPID before exiting this function so your rat is ready for the next instruction.
 	 */
-	//445 difference in encoder count ~= 90 degree turn
-	setPIDGoalA(n*620);
+	//about 640 at full charge
+	setPIDGoalA((int)(n*660));
+
 	while(!PIDdone()) { // wait until done
 	}
 
