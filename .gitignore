@@ -37,3 +37,6 @@
 # generated files
 Assignments/Debug/*
 
+# settings
+Assignments/.settings/
+Assignments/Assignments Debug.launch

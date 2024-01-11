@@ -17,15 +17,19 @@ int goalAngle = 0;
 float kPw = 0.4;
 float kDw = 0.1;
 float kPx = 1; //TODO: tune kPx and kDx briefly
-float kDx = 0;
+float kDx = 0.05;
 
 //helper variable to check if goal is reached
 int goalIsReached = 0;
 int goalReachedDuration = 0;
+int timePassed = 0;
 
 int motorR = 0;
 int motorL = 0;
 float dCorrection = 0;
+
+int16_t left = -1;
+int16_t right = -1;
 
 
 void resetPID() {
@@ -48,15 +52,15 @@ void resetPID() {
 	goalReachedDuration = 0;
 	goalIsReached = 0;
 
-	resetEncoders();
 	resetMotors();
+	resetEncoders();
+	timePassed = 0;
 }
 
-//TODO: tune limiters to optimize performance
 float angleLimiter(float angleCorrection) {
 	if (angleCorrection > 0.4) {return 0.4;}
 	else if (angleCorrection < 0.01 && angleCorrection >= 0) {return 0;}
-	else if (angleCorrection < -0.01) {return -0.4;}
+	else if (angleCorrection < -0.4) {return -0.4;}
 	else if (angleCorrection > -0.01 && angleCorrection <= 0) {return 0;}
 	return angleCorrection;
 }
@@ -64,7 +68,7 @@ float angleLimiter(float angleCorrection) {
 float distanceLimiter(float distanceCorrection) {
 	if (distanceCorrection > 0.4) {return 0.4;}
 	else if (distanceCorrection < 0.01 && distanceCorrection >= 0) {return 0;}
-	else if (distanceCorrection < -0.01) {return -0.4;}
+	else if (distanceCorrection < -0.4) {return -0.4;}
 	else if (distanceCorrection > -0.01 && distanceCorrection <= 0) {return 0;}
 	return distanceCorrection;
 }
@@ -89,15 +93,20 @@ void updatePID() {
 	 * right encoder counts. Refer to pseudocode example document on the google drive for some pointers.
 	 */
 
+	//increment timer
+	timePassed = timePassed + 1;
 
 	//get encoder values
 	int16_t left_counts = getLeftEncoderCounts();
 	int16_t right_counts = getRightEncoderCounts();
 
+	left = getLeftEncoderCounts();
+	right = getRightEncoderCounts();
+
 	//angle logic
 	angleError = goalAngle - (left_counts - right_counts);
-	distanceError = goalDistance + (left_coundistancets + right_counts) / 2;
-	if (angleError < 100 && distanceError < 100) {goalIsReached = 1;} // if error is under arbitrary thresholds
+	distanceError = goalDistance + (left_counts + right_counts) / 2;
+	if (angleError < 50 && angleError > -50 && distanceError < 50 && distanceError > -50) {goalIsReached = 1;} // if error is under arbitrary thresholds
 	float angleCorrection = kPw * angleError + kDw * (angleError - oldAngleError);
 	float distanceCorrection = kPx * distanceError + kDx * (distanceError - oldDistanceError);
 	oldDistanceError = distanceError;
@@ -111,7 +120,7 @@ void updatePID() {
 	motorR = distanceLimiter(distanceCorrection) + angleLimiter(angleCorrection);
 }
 
-void setPIDGoalD(int16_t distance) {
+void setPIDGoalD(int distance) {
 	/*
 	 * For assignment 3.1: this function does not need to do anything.
 	 * For assignment 3.2: this function should set a variable that stores the goal distance.
@@ -119,7 +128,7 @@ void setPIDGoalD(int16_t distance) {
 	goalDistance = distance;
 }
 
-void setPIDGoalA(int16_t angle) {
+void setPIDGoalA(int angle) {
 	/*
 	 * For assignment 3.1: this function does not need to do anything
 	 * For assignment 3.2: This function should set a variable that stores the goal angle.
@@ -142,5 +151,5 @@ int8_t PIDdone(void) { // There is no bool type in C. True/False values are repr
 	}
 
 
-	return (goalReachedDuration >= 50); // return true if goal is reached and has stayed there for more than 50 calls (50ms)
+	return (goalReachedDuration >= 50 || timePassed > 3000); // return true if goal is reached and has stayed there for more than 50 calls (50ms)
 }

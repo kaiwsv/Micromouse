@@ -7,7 +7,7 @@
 
 #include "main.h"
 
-void move(int8_t n);
-void turn(int8_t n);
+void move(float n);
+void turn(float n);
 
 #endif /* INC_CONTROLLER_H_ */
