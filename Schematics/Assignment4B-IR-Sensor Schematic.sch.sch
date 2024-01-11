@@ -653,6 +653,172 @@
 </deviceset>
 </devicesets>
 </library>
+<library name="CRCW08051K80FKEB">
+<packages>
+<package name="RESC2012X50N">
+<text x="-1.71" y="-1.05" size="0.5" layer="27" align="top-left">&gt;VALUE</text>
+<text x="-1.71" y="1.05" size="0.5" layer="25">&gt;NAME</text>
+<wire x1="1.1" y1="-0.7" x2="-1.1" y2="-0.7" width="0.127" layer="51"/>
+<wire x1="1.1" y1="0.7" x2="-1.1" y2="0.7" width="0.127" layer="51"/>
+<wire x1="1.1" y1="-0.7" x2="1.1" y2="0.7" width="0.127" layer="51"/>
+<wire x1="-1.1" y1="-0.7" x2="-1.1" y2="0.7" width="0.127" layer="51"/>
+<wire x1="-0.22" y1="0.7" x2="0.22" y2="0.7" width="0.127" layer="21"/>
+<wire x1="-0.22" y1="-0.7" x2="0.22" y2="-0.7" width="0.127" layer="21"/>
+<wire x1="-1.71" y1="-0.96" x2="1.71" y2="-0.96" width="0.05" layer="39"/>
+<wire x1="-1.71" y1="0.96" x2="1.71" y2="0.96" width="0.05" layer="39"/>
+<wire x1="-1.71" y1="-0.96" x2="-1.71" y2="0.96" width="0.05" layer="39"/>
+<wire x1="1.71" y1="-0.96" x2="1.71" y2="0.96" width="0.05" layer="39"/>
+<smd name="1" x="-1" y="0" dx="0.92" dy="1.42" layer="1"/>
+<smd name="2" x="1" y="0" dx="0.92" dy="1.42" layer="1"/>
+</package>
+</packages>
+<symbols>
+<symbol name="CRCW08051K80FKEB">
+<wire x1="-5.08" y1="0" x2="-4.445" y2="1.905" width="0.254" layer="94"/>
+<wire x1="-4.445" y1="1.905" x2="-3.175" y2="-1.905" width="0.254" layer="94"/>
+<wire x1="-3.175" y1="-1.905" x2="-1.905" y2="1.905" width="0.254" layer="94"/>
+<wire x1="-1.905" y1="1.905" x2="-0.635" y2="-1.905" width="0.254" layer="94"/>
+<wire x1="-0.635" y1="-1.905" x2="0.635" y2="1.905" width="0.254" layer="94"/>
+<wire x1="0.635" y1="1.905" x2="1.905" y2="-1.905" width="0.254" layer="94"/>
+<wire x1="1.905" y1="-1.905" x2="3.175" y2="1.905" width="0.254" layer="94"/>
+<wire x1="3.175" y1="1.905" x2="4.445" y2="-1.905" width="0.254" layer="94"/>
+<wire x1="4.445" y1="-1.905" x2="5.08" y2="0" width="0.254" layer="94"/>
+<text x="-7.624440625" y="2.54148125" size="2.54148125" layer="95">&gt;NAME</text>
+<text x="-7.62996875" y="-5.086640625" size="2.54331875" layer="96">&gt;VALUE</text>
+<pin name="1" x="-10.16" y="0" visible="off" length="middle" direction="pas"/>
+<pin name="2" x="10.16" y="0" visible="off" length="middle" direction="pas" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="CRCW08051K80FKEB" prefix="R">
+<description>RES SMD 1.8K OHM 1% 1/8W 0805 </description>
+<gates>
+<gate name="G$1" symbol="CRCW08051K80FKEB" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="RESC2012X50N">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="CHECK_PRICES" value="https://www.snapeda.com/parts/CRCW08051K80FKEB/Vishay+Dale/view-part/?ref=eda"/>
+<attribute name="DESCRIPTION" value=" 1.8 kOhms ±1% 0.125W, 1/8W Chip Resistor 0805 (2012 Metric) Automotive AEC-Q200 Thick Film "/>
+<attribute name="DIGIKEY_PART_NUMBER" value="541-CRCW08051K80FKEBTR-ND"/>
+<attribute name="MF" value="Vishay Dale"/>
+<attribute name="MP" value="CRCW08051K80FKEB"/>
+<attribute name="PACKAGE" value="2012 Vishay"/>
+<attribute name="PURCHASE-URL" value="https://www.snapeda.com/api/url_track_click_mouser/?unipart_id=943539&amp;manufacturer=Vishay Dale&amp;part_name=CRCW08051K80FKEB&amp;search_term=None"/>
+<attribute name="SNAPEDA_LINK" value="https://www.snapeda.com/parts/CRCW08051K80FKEB/Vishay+Dale/view-part/?ref=snap"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+<library name="SFH_313_FA-3_4">
+<packages>
+<package name="XDCR_SFH_313_FA-3/4">
+<text x="-2.9" y="3.4" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3.5" y="-4.6" size="1.27" layer="27">&gt;VALUE</text>
+<circle x="-3.56" y="-0.02" radius="0.143178125" width="0.2" layer="21"/>
+<circle x="-3.56" y="-0.02" radius="0.143178125" width="0.2" layer="51"/>
+<wire x1="2.35" y1="1.77" x2="2.35" y2="-1.77" width="0.127" layer="51"/>
+<wire x1="2.35" y1="1.77" x2="2.35" y2="-1.77" width="0.127" layer="51" curve="286.26"/>
+<wire x1="2.35" y1="1.77" x2="2.35" y2="1" width="0.127" layer="21"/>
+<wire x1="2.35" y1="-1" x2="2.35" y2="-1.77" width="0.127" layer="21"/>
+<wire x1="2.35" y1="1.77" x2="2.35" y2="-1.77" width="0.127" layer="21" curve="286.26"/>
+<polygon width="0.001" layer="1">
+<vertex x="0.27" y="0.06"/>
+<vertex x="0.27" y="1.79" curve="-43"/>
+<vertex x="1.87" y="2.4"/>
+<vertex x="1.895" y="2.4" curve="-89"/>
+<vertex x="4.27" y="0" curve="-89"/>
+<vertex x="1.895" y="-2.4"/>
+<vertex x="1.795" y="-2.4"/>
+<vertex x="1.87" y="-2.4" curve="-43"/>
+<vertex x="0.27" y="-1.79"/>
+</polygon>
+<circle x="1.27" y="0" radius="0.5" width="1" layer="29"/>
+<circle x="-1.27" y="0" radius="0.5" width="1" layer="29"/>
+<wire x1="-3.25" y1="3.2" x2="4.5" y2="3.2" width="0.05" layer="39"/>
+<wire x1="4.5" y1="3.2" x2="4.5" y2="-3.2" width="0.05" layer="39"/>
+<wire x1="4.5" y1="-3.2" x2="-3.25" y2="-3.2" width="0.05" layer="39"/>
+<wire x1="-3.25" y1="-3.2" x2="-3.25" y2="3.2" width="0.05" layer="39"/>
+<circle x="-1.27" y="0" radius="0.5" width="1" layer="30"/>
+<circle x="1.27" y="0" radius="0.5" width="1" layer="30"/>
+<pad name="1" x="-1.27" y="0" drill="1" diameter="2" stop="no"/>
+<pad name="2" x="1.27" y="0" drill="1" diameter="2" stop="no"/>
+</package>
+</packages>
+<symbols>
+<symbol name="SFH_313_FA-3/4">
+<wire x1="-4.953" y1="2.54" x2="-3.175" y2="0.762" width="0.1524" layer="94"/>
+<wire x1="-3.175" y1="0.762" x2="-4.318" y2="1.143" width="0.1524" layer="94"/>
+<wire x1="-4.318" y1="1.143" x2="-3.556" y2="1.905" width="0.1524" layer="94"/>
+<wire x1="-3.556" y1="1.905" x2="-3.175" y2="0.762" width="0.1524" layer="94"/>
+<wire x1="2.286" y1="-2.286" x2="2.54" y2="-2.54" width="0.1524" layer="94"/>
+<text x="-10.1556" y="5.0822" size="1.779540625" layer="95">&gt;NAME</text>
+<text x="-10.1508" y="-7.62" size="1.78121875" layer="96">&gt;VALUE</text>
+<polygon width="0.1524" layer="94">
+<vertex x="-4.318" y="1.143"/>
+<vertex x="-3.175" y="0.762"/>
+<vertex x="-3.556" y="1.905"/>
+</polygon>
+<circle x="1.27" y="0" radius="3.175" width="0.254" layer="94"/>
+<wire x1="0" y1="1.905" x2="0" y2="0.635" width="0.254" layer="94"/>
+<wire x1="0" y1="0.635" x2="0" y2="-0.635" width="0.254" layer="94"/>
+<wire x1="0" y1="-0.635" x2="0" y2="-1.905" width="0.254" layer="94"/>
+<wire x1="0" y1="-0.635" x2="2.54" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="0" y1="0.635" x2="2.54" y2="2.54" width="0.254" layer="94"/>
+<polygon width="0.254" layer="94">
+<vertex x="2.54" y="-2.54"/>
+<vertex x="2.286" y="-1.524"/>
+<vertex x="1.524" y="-2.54"/>
+</polygon>
+<wire x1="-4.953" y1="0.635" x2="-3.175" y2="-1.143" width="0.1524" layer="94"/>
+<wire x1="-3.175" y1="-1.143" x2="-4.318" y2="-0.762" width="0.1524" layer="94"/>
+<wire x1="-4.318" y1="-0.762" x2="-3.556" y2="0" width="0.1524" layer="94"/>
+<wire x1="-3.556" y1="0" x2="-3.175" y2="-1.143" width="0.1524" layer="94"/>
+<polygon width="0.1524" layer="94">
+<vertex x="-4.318" y="-0.762"/>
+<vertex x="-3.175" y="-1.143"/>
+<vertex x="-3.556" y="0"/>
+</polygon>
+<pin name="E" x="2.54" y="-5.08" visible="off" length="short" direction="pas" rot="R90"/>
+<pin name="C" x="2.54" y="5.08" visible="off" length="short" direction="pas" rot="R270"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="SFH_313_FA-3/4" prefix="Q">
+<description>Phototransistor IR Chip Silicon 870nm 2-Pin T-1 3/4 </description>
+<gates>
+<gate name="G$1" symbol="SFH_313_FA-3/4" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="XDCR_SFH_313_FA-3/4">
+<connects>
+<connect gate="G$1" pin="C" pad="2"/>
+<connect gate="G$1" pin="E" pad="1"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="CHECK_PRICES" value="https://www.snapeda.com/parts/SFH%20313%20FA-3/4/OSRAM+Opto+Semiconductors+Inc./view-part/?ref=eda"/>
+<attribute name="DESCRIPTION" value=" Phototransistors 870nm Top View Radial - 2 Leads "/>
+<attribute name="DIGIKEY_PART_NUMBER" value="475-SFH313FA-3/4-ND"/>
+<attribute name="MF" value="OSRAM Opto"/>
+<attribute name="MP" value="SFH 313 FA-3/4"/>
+<attribute name="PACKAGE" value="Radial-2 OSRAM Opto"/>
+<attribute name="SNAPEDA_LINK" value="https://www.snapeda.com/parts/SFH%20313%20FA-3/4/OSRAM+Opto+Semiconductors+Inc./view-part/?ref=snap"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -670,6 +836,8 @@
 <part name="R2" library="CRCW0805100RFKEAHP" deviceset="CRCW0805100RFKEAHP" device="" value="100 Ω "/>
 <part name="R1" library="CRCW080551R0FKEAHP" deviceset="CRCW080551R0FKEAHP" device="" value="51 Ω "/>
 <part name="R3" library="CRCW080547K0JNEA" deviceset="CRCW080547K0JNEA" device="" value="47 kΩ "/>
+<part name="R4" library="CRCW08051K80FKEB" deviceset="CRCW08051K80FKEB" device="" value="1.8 kΩ"/>
+<part name="Q1" library="SFH_313_FA-3_4" deviceset="SFH_313_FA-3/4" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -702,6 +870,14 @@
 <instance part="R3" gate="G$1" x="48.26" y="27.94" smashed="yes" rot="R90">
 <attribute name="NAME" x="45.71851875" y="20.315559375" size="2.54148125" layer="95" rot="R90"/>
 <attribute name="VALUE" x="53.346640625" y="20.31003125" size="2.54331875" layer="96" rot="R90"/>
+</instance>
+<instance part="R4" gate="G$1" x="-27.94" y="76.2" smashed="yes" rot="R90">
+<attribute name="NAME" x="-30.48148125" y="68.575559375" size="2.54148125" layer="95" rot="R90"/>
+<attribute name="VALUE" x="-22.853359375" y="68.57003125" size="2.54331875" layer="96" rot="R90"/>
+</instance>
+<instance part="Q1" gate="G$1" x="-30.48" y="99.06" smashed="yes">
+<attribute name="NAME" x="-38.0956" y="104.1422" size="1.779540625" layer="95"/>
+<attribute name="VALUE" x="-22.8508" y="99.06" size="1.78121875" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -745,6 +921,11 @@
 <wire x1="55.88" y1="15.24" x2="55.88" y2="7.62" width="0.1524" layer="91"/>
 <label x="55.88" y="7.62" size="1.778" layer="95" rot="R270" xref="yes"/>
 </segment>
+<segment>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="-27.94" y1="66.04" x2="-27.94" y2="60.96" width="0.1524" layer="91"/>
+<label x="-27.94" y="60.96" size="1.778" layer="95" rot="R270" xref="yes"/>
+</segment>
 </net>
 <net name="N$3" class="0">
 <segment>
@@ -777,6 +958,22 @@
 <junction x="55.88" y="104.14"/>
 <wire x1="55.88" y1="111.76" x2="55.88" y2="109.22" width="0.1524" layer="91"/>
 <label x="55.88" y="111.76" size="1.778" layer="95" rot="R90" xref="yes"/>
+</segment>
+<segment>
+<pinref part="Q1" gate="G$1" pin="C"/>
+<wire x1="-27.94" y1="104.14" x2="-27.94" y2="109.22" width="0.1524" layer="91"/>
+<label x="-27.94" y="109.22" size="1.778" layer="95" rot="R90" xref="yes"/>
+</segment>
+</net>
+<net name="PC5" class="0">
+<segment>
+<pinref part="R4" gate="G$1" pin="2"/>
+<wire x1="-27.94" y1="86.36" x2="-27.94" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="91.44" x2="-27.94" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="91.44" x2="-20.32" y2="91.44" width="0.1524" layer="91"/>
+<junction x="-27.94" y="91.44"/>
+<pinref part="Q1" gate="G$1" pin="E"/>
+<label x="-20.32" y="91.44" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
