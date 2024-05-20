@@ -42,11 +42,10 @@ Assignments/.settings/
 Assignments/Assignments Debug.launch
 
 # for AAMC-Micromouse
-.metadata
-.settings
+.settings/
 [Rr]elease
 [Dd]ebug
-.launch
+*.launch
 *.tmp
 *.bak
 *.ld
