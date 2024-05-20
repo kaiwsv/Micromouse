@@ -1,4 +1,4 @@
-# Prerequisites
+n# Prerequisites
 *.d
 
 # Compiled Object files
@@ -40,3 +40,13 @@ Assignments/Debug/*
 # settings
 Assignments/.settings/
 Assignments/Assignments Debug.launch
+
+# for AAMC-Micromouse
+.metadata
+.settings
+[Rr]elease
+[Dd]ebug
+.launch
+*.tmp
+*.bak
+*.ld

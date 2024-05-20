@@ -57,6 +57,52 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define button_left_Pin GPIO_PIN_0
+#define button_left_GPIO_Port GPIOH
+#define button_left_EXTI_IRQn EXTI0_IRQn
+#define button_right_Pin GPIO_PIN_1
+#define button_right_GPIO_Port GPIOH
+#define button_right_EXTI_IRQn EXTI1_IRQn
+#define receiver_right_Pin GPIO_PIN_2
+#define receiver_right_GPIO_Port GPIOC
+#define receiver_left_Pin GPIO_PIN_3
+#define receiver_left_GPIO_Port GPIOC
+#define left_motor_encoder_B_Pin GPIO_PIN_0
+#define left_motor_encoder_B_GPIO_Port GPIOA
+#define left_motor_encoder_A_Pin GPIO_PIN_1
+#define left_motor_encoder_A_GPIO_Port GPIOA
+#define LED_front_right_Pin GPIO_PIN_2
+#define LED_front_right_GPIO_Port GPIOA
+#define LED_back_left_Pin GPIO_PIN_3
+#define LED_back_left_GPIO_Port GPIOA
+#define receiver_back_right_Pin GPIO_PIN_4
+#define receiver_back_right_GPIO_Port GPIOA
+#define receiver_back_left_Pin GPIO_PIN_5
+#define receiver_back_left_GPIO_Port GPIOA
+#define receiver_front_right_diagonal_Pin GPIO_PIN_6
+#define receiver_front_right_diagonal_GPIO_Port GPIOA
+#define receiver_front_right_Pin GPIO_PIN_7
+#define receiver_front_right_GPIO_Port GPIOA
+#define receiver_front_left_diagonal_Pin GPIO_PIN_0
+#define receiver_front_left_diagonal_GPIO_Port GPIOB
+#define receiver_front_left_Pin GPIO_PIN_1
+#define receiver_front_left_GPIO_Port GPIOB
+#define right_motor_encoder_B_Pin GPIO_PIN_8
+#define right_motor_encoder_B_GPIO_Port GPIOA
+#define right_motor_encoder_A_Pin GPIO_PIN_9
+#define right_motor_encoder_A_GPIO_Port GPIOA
+#define LED_back_right_Pin GPIO_PIN_10
+#define LED_back_right_GPIO_Port GPIOA
+#define LED_back_leftA11_Pin GPIO_PIN_11
+#define LED_back_leftA11_GPIO_Port GPIOA
+#define down_motor_Pin GPIO_PIN_12
+#define down_motor_GPIO_Port GPIOA
+#define SWDIO_Pin GPIO_PIN_13
+#define SWDIO_GPIO_Port GPIOA
+#define SWCLK_Pin GPIO_PIN_14
+#define SWCLK_GPIO_Port GPIOA
+#define I2C_reset_front_Pin GPIO_PIN_15
+#define I2C_reset_front_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
