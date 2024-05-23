@@ -127,8 +127,6 @@ void Error_Handler(void);
 #define motor_encoder_right_B_GPIO_Port GPIOA
 #define motor_encoder_right_A_Pin GPIO_PIN_9
 #define motor_encoder_right_A_GPIO_Port GPIOA
-#define LED_back_right_Pin GPIO_PIN_10
-#define LED_back_right_GPIO_Port GPIOA
 #define LED_back_leftA11_Pin GPIO_PIN_11
 #define LED_back_leftA11_GPIO_Port GPIOA
 #define down_motor_Pin GPIO_PIN_12
@@ -145,8 +143,6 @@ void Error_Handler(void);
 #define USART3_RX_GPIO_Port GPIOC
 #define extra_GPIO_2_Pin GPIO_PIN_12
 #define extra_GPIO_2_GPIO_Port GPIOC
-#define dip_0_Pin GPIO_PIN_2
-#define dip_0_GPIO_Port GPIOD
 #define emitter_rightB3_Pin GPIO_PIN_3
 #define emitter_rightB3_GPIO_Port GPIOB
 #define emitter_left_Pin GPIO_PIN_4
