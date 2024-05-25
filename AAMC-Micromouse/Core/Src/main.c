@@ -21,7 +21,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdbool.h>
+#include "encoders.h"
+#include "motors.h"
+//#include "controller.h"
+#include "delay.h"
+#include "irs.h"
 
 /* USER CODE END Includes */
 
@@ -33,6 +37,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define WALL_IR_THRESHOLD_FR 430
+#define WALL_IR_THRESHOLD_FL 430
+#define WALL_IR_THRESHOLD_LEFT 430
+#define WALL_IR_THRESHOLD_RIGHT 430
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,6 +50,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 
 I2C_HandleTypeDef hi2c2;
 
@@ -50,12 +59,20 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
-bool buttonPressed = false;
+int buttonPressed = 0;
+int16_t left_counts = 0;
+int16_t right_counts = 0;
+
+uint16_t ir_reading_left = 0;
+uint16_t ir_reading_front_left = 0;
+uint16_t ir_reading_front_right = 0;
+uint16_t ir_reading_right = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM2_Init(void);
@@ -83,10 +100,10 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+      HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  Delay_Init();
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -98,12 +115,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM4_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+  HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
@@ -118,6 +139,19 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  resetMotors();
+	  ir_reading_left = readLeftIR();
+	  ir_reading_front_left = readFrontLeftIR();
+	  ir_reading_front_right = readFrontRightIR();
+	  ir_reading_right = readRightIR();
+	  left_counts = getLeftEncoderCounts();
+	  right_counts = getRightEncoderCounts();
+	  setMotorRPWM(0.5);
+	  setMotorLPWM(0.5);
+	  delayMicroseconds(1000000);
+	  resetMotors();
+	  delayMicroseconds(1000000);
+
   }
   /* USER CODE END 3 */
 }
@@ -182,13 +216,13 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.ScanConvMode = DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 1;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.DMAContinuousRequests = ENABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
@@ -269,7 +303,7 @@ static void MX_TIM1_Init(void)
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
@@ -315,10 +349,10 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 4294967295;
+  htim2.Init.Period = 65535;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
@@ -364,7 +398,7 @@ static void MX_TIM4_Init(void)
   htim4.Instance = TIM4;
   htim4.Init.Prescaler = 0;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 65535;
+  htim4.Init.Period = 3199;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
@@ -405,6 +439,22 @@ static void MX_TIM4_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -425,8 +475,8 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOC, emitter_front_left_Pin|emitter_back_right_Pin|extra_GPIO_2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, extra_GPIO_0_Pin|emitter_back_left_Pin|emitter_front_right_diagonal_Pin|emitter_right_Pin
-                          |emitter_rightB3_Pin|emitter_left_Pin|emitter_front_left_diagonal_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, extra_GPIO_0_Pin|emitter_back_left_Pin|emitter_front_right_diagonal_Pin|emitter_front_right_Pin
+                          |emitter_right_Pin|emitter_left_Pin|emitter_front_left_diagonal_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, down_motor_Pin|I2C_reset_front_Pin, GPIO_PIN_RESET);
@@ -450,10 +500,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : extra_GPIO_0_Pin emitter_back_left_Pin emitter_front_right_diagonal_Pin emitter_right_Pin
-                           emitter_rightB3_Pin emitter_left_Pin emitter_front_left_diagonal_Pin */
-  GPIO_InitStruct.Pin = extra_GPIO_0_Pin|emitter_back_left_Pin|emitter_front_right_diagonal_Pin|emitter_right_Pin
-                          |emitter_rightB3_Pin|emitter_left_Pin|emitter_front_left_diagonal_Pin;
+  /*Configure GPIO pins : extra_GPIO_0_Pin emitter_back_left_Pin emitter_front_right_diagonal_Pin emitter_front_right_Pin
+                           emitter_right_Pin emitter_left_Pin emitter_front_left_diagonal_Pin */
+  GPIO_InitStruct.Pin = extra_GPIO_0_Pin|emitter_back_left_Pin|emitter_front_right_diagonal_Pin|emitter_front_right_Pin
+                          |emitter_right_Pin|emitter_left_Pin|emitter_front_left_diagonal_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -494,22 +544,29 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+ADC_HandleTypeDef* Get_HADC1_Ptr(void)
+{
+	return &hadc1;
+}
+
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN) {
+	resetMotors();
 	if (GPIO_PIN == button_left_Pin) {
 		if (HAL_GPIO_ReadPin(button_left_GPIO_Port, button_left_Pin) == GPIO_PIN_SET) {
-			buttonPressed = true;
+			buttonPressed = 1;
 		}
 		else {
-			buttonPressed = false;
+			buttonPressed = 0;
 		}
 	}
 
 	if (GPIO_PIN == button_right_Pin) {
 		if (HAL_GPIO_ReadPin(button_right_GPIO_Port, button_right_Pin ) == GPIO_PIN_SET) {
-			buttonPressed = true;
+			buttonPressed = 1;
 		}
 		else {
-			buttonPressed = false;
+			buttonPressed = 0;
 		}
 	}
 

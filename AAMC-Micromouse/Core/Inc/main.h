@@ -55,7 +55,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+ADC_HandleTypeDef* Get_HADC1_Ptr(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -113,8 +113,8 @@ void Error_Handler(void);
 #define emitter_back_left_GPIO_Port GPIOB
 #define emitter_front_right_diagonal_Pin GPIO_PIN_14
 #define emitter_front_right_diagonal_GPIO_Port GPIOB
-#define emitter_right_Pin GPIO_PIN_15
-#define emitter_right_GPIO_Port GPIOB
+#define emitter_front_right_Pin GPIO_PIN_15
+#define emitter_front_right_GPIO_Port GPIOB
 #define piezo_A_Pin GPIO_PIN_6
 #define piezo_A_GPIO_Port GPIOC
 #define piezo_B_Pin GPIO_PIN_7
@@ -143,8 +143,8 @@ void Error_Handler(void);
 #define USART3_RX_GPIO_Port GPIOC
 #define extra_GPIO_2_Pin GPIO_PIN_12
 #define extra_GPIO_2_GPIO_Port GPIOC
-#define emitter_rightB3_Pin GPIO_PIN_3
-#define emitter_rightB3_GPIO_Port GPIOB
+#define emitter_right_Pin GPIO_PIN_3
+#define emitter_right_GPIO_Port GPIOB
 #define emitter_left_Pin GPIO_PIN_4
 #define emitter_left_GPIO_Port GPIOB
 #define emitter_front_left_diagonal_Pin GPIO_PIN_5
